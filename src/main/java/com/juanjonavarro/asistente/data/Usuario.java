@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 import lombok.Data;
 
 @Entity
@@ -24,4 +25,8 @@ public class Usuario {
 
     @Enumerated(EnumType.STRING)
     private EstadoUsuario estado;
+
+
+    @Column(name = "bloquear_asistente")
+    private Boolean bloquearAsistente = false;
 }

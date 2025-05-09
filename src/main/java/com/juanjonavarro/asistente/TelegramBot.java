@@ -159,7 +159,9 @@ public class TelegramBot extends TelegramLongPollingBot implements ApplicationRu
         List<Usuario> usuarios = usuarioRepository.findByEstado(Usuario.EstadoUsuario.ACTIVE);
         for (Usuario u : usuarios) {
             try {
-                enviarMensajeDiario(u);
+                if (!u.getBloquearAsistente()) {
+                    enviarMensajeDiario(u);
+                }
             } catch (TelegramApiException e) {
                 System.out.println("Error enviando mensaje diario a " + u.getClientid());
                 System.out.println(e.getLocalizedMessage());
@@ -235,9 +237,11 @@ public class TelegramBot extends TelegramLongPollingBot implements ApplicationRu
         List<Usuario> usuarios = usuarioRepository.findByEstado(Usuario.EstadoUsuario.ACTIVE);
         for (Usuario u : usuarios) {
             try {
-                u.setAsistente(proximoAsistenteId);
-                usuarioRepository.save(u);
-                enviarMensajeDiario(u);
+                if (!u.getBloquearAsistente()) {
+                    u.setAsistente(proximoAsistenteId);
+                    usuarioRepository.save(u);
+                    enviarMensajeDiario(u);
+                }
             } catch (TelegramApiException e) {
                 System.out.println("Error enviando mensaje diario a " + u.getClientid());
                 System.out.println(e.getLocalizedMessage());
